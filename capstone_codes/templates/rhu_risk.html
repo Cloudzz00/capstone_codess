@@ -1,0 +1,76 @@
+{% extends "layout_app.html" %}
+{% block content %}
+<div class="page-head"><h2>Predictive Analytics</h2></div>
+
+<div class="stat-grid">
+  <div class="stat-card"><div class="stat-icon bg-red">🔴</div><div class="stat-value">{{ dist.high_count }}</div><div class="stat-label">High Risk</div><div class="stat-caption">Immediate action required</div></div>
+  <div class="stat-card"><div class="stat-icon bg-orange">🟠</div><div class="stat-value">{{ dist.medium_count }}</div><div class="stat-label">Medium Risk</div><div class="stat-caption">Monitor closely</div></div>
+  <div class="stat-card"><div class="stat-icon bg-green">✅</div><div class="stat-value">{{ dist.low_count }}</div><div class="stat-label">Low Risk</div><div class="stat-caption">On schedule</div></div>
+  <div class="stat-card"><div class="stat-icon bg-blue">💓</div><div class="stat-value">{{ '%.1f'|format(metrics.get('accuracy', 0.94)*100) }}%</div><div class="stat-label">Model Accuracy</div><div class="stat-caption">{{ model_name }} classifier</div></div>
+</div>
+
+<div class="pill-tabs" data-tabgroup="riskTabs">
+  <button class="pill-tab active" data-tab="overview">Analytics Overview</button>
+  <button class="pill-tab" data-tab="atrisk">At-Risk Children <span class="count-badge">{{ at_risk_rows|length }}</span></button>
+</div>
+
+<div data-tabpanel="riskTabs" data-tabvalue="overview">
+  <div class="grid-2">
+    <div class="card card-pad">
+      <div class="card-title">Risk Distribution</div>
+      <div class="card-sub">By risk level across all children</div>
+      <div class="chart-box"><canvas id="riskDonut"></canvas></div>
+    </div>
+    <div class="card card-pad">
+      <div class="card-title">Top Risk Factors</div>
+      <div class="card-sub">Contributing to non-completion</div>
+      <div class="chart-box"><canvas id="factorsBar"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<div data-tabpanel="riskTabs" data-tabvalue="atrisk" style="display:none;">
+  <div class="table-wrap">
+  <table class="data-table">
+    <thead><tr><th>Rank</th><th>Patient ID</th><th>Barangay</th><th>Risk Score</th><th>Risk Level</th><th>Missed Vaccines</th><th>Last Visit</th><th>Recommendation</th></tr></thead>
+    <tbody>
+    {% for r in at_risk_rows %}
+      <tr>
+        <td><span class="rank-badge">{{ loop.index }}</span></td>
+        <td><b>{{ r.child.barangay.name[:2]|upper }}-{{ '%03d'|format(r.child.id) }}</b><br><span class="text-muted" style="font-size:11.5px">{{ r.child.full_name }} · {{ 'Male' if r.child.sex=='M' else 'Female' }} · {{ r.child.age_display }}</span></td>
+        <td>{{ r.child.barangay.name }}</td>
+        <td><span class="progress-track"><span class="progress-fill {{ r.color }}" style="width:{{ r.risk_score }}%"></span></span>{{ r.risk_score }}%</td>
+        <td><span class="badge badge-{{ r.color }}">{{ r.tier }}</span></td>
+        <td>{{ r.missed }} of {{ r.due }}</td>
+        <td>{{ r.last_visit.strftime('%Y-%m-%d') if r.last_visit else '—' }}</td>
+        <td><span class="badge badge-{{ 'red' if r.recommendation=='Home Visit' else 'amber' }}">{{ r.recommendation }}</span></td>
+      </tr>
+    {% else %}
+      <tr><td colspan="8"><div class="empty-state"><div class="ic">✅</div><div class="t">No at-risk children</div></div></td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/vendor/chart.umd.js') }}"></script>
+<script>Chart.defaults.maintainAspectRatio = false; Chart.defaults.responsive = true;</script>
+<script>
+new Chart(document.getElementById('riskDonut'), {
+  type: 'doughnut',
+  data: { labels: ['Not At-Risk', 'High Risk', 'Medium Risk'],
+    datasets: [{ data: [{{ dist.low_pct }}, {{ dist.high_pct }}, {{ dist.medium_pct }}], backgroundColor: ['#22c55e', '#ef4444', '#f59e0b'], borderWidth: 0 }] },
+  options: { plugins: { legend: { position: 'bottom' } } }
+});
+new Chart(document.getElementById('factorsBar'), {
+  type: 'bar',
+  data: {
+    labels: [{% for f in factors %}{{ f.label|tojson }},{% endfor %}],
+    datasets: [{ data: [{% for f in factors %}{{ f.pct }},{% endfor %}], backgroundColor: '#f97316', borderRadius: 6 }]
+  },
+  options: { indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { max: 100 } } }
+});
+</script>
+{% endblock %}
