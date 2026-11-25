@@ -3,10 +3,10 @@
 A small Python/Flask site:
 
 1. **Question page.** "Hey baby… Will you watch a movie with me?" The **No**
-   button runs away whenever she tries to click or tap it, and **Yes** grows
+   button stays on screen but can't be pressed: it just shakes and pleads, and **Yes** grows
    with every try.
-2. **Yes page.** Confetti, then a short form: what kind of movie, cinema or at
-   home, the day, the time, and snack requests.
+2. **Yes page.** Confetti, then a short form: what kind of movie, how to watch
+   together (video call, Discord, watch party), the day, the time, and a note.
 3. **"It's a movie date!" page.** A movie ticket showing the plan.
 4. **Responses page.** Only you can see it, at `/responses?key=YOUR_KEY`. It
    shows everything she picked (saved in `responses.json`).
@@ -21,7 +21,7 @@ THEIR_NAME = "baby"          # what you call her
 YOUR_NAME = "your baby"      # how you sign off
 RESPONSES_KEY = "change-me"  # password for /responses
 MOVIE_GENRES = [...]         # the movie choices
-PLACES = [...]               # cinema / at home
+PLACES = [...]               # how to watch together
 ```
 
 ## Run it on your own computer (optional)

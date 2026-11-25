@@ -30,10 +30,11 @@ MOVIE_GENRES = [
     ("youpick", "You pick, baby!"),
 ]
 
-# Where to watch it.
+# How to watch together from far away (we're long distance).
 PLACES = [
-    ("cinema", "At the cinema 🎟️"),
-    ("home", "Cozy at home 🛋️"),
+    ("call", "Video call & press play together 📞"),
+    ("discord", "Discord screen share 🎮"),
+    ("party", "Watch party (Teleparty) 🍿"),
 ]
 # ---------------------------------------------------------------------------
 

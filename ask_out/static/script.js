@@ -16,7 +16,7 @@
   setInterval(spawn, 900);
 })();
 
-// The question page: the "No" button runs away and "Yes" keeps growing.
+// The question page: "No" can't be pressed and "Yes" keeps growing.
 function initQuestion(name) {
   const noBtn = document.getElementById("noBtn");
   const yesBtn = document.getElementById("yesBtn");
@@ -34,40 +34,23 @@ function initQuestion(name) {
   let tries = 0;
   let yesSize = 1.1;
 
-  function runAway(e) {
+  // "No" stays put and stays visible, but it can't be pressed:
+  // it just shakes, pleads, and makes "Yes" a little bigger.
+  function refuse(e) {
     if (e) e.preventDefault();
-    const rect = noBtn.getBoundingClientRect();
-    if (!noBtn.classList.contains("running")) {
-      // Pin it where it is first, so the jump animates smoothly.
-      noBtn.style.left = rect.left + "px";
-      noBtn.style.top = rect.top + "px";
-      noBtn.classList.add("running");
-    }
-    const pad = 16;
-    const maxX = window.innerWidth - rect.width - pad;
-    const maxY = window.innerHeight - rect.height - pad;
-    // Pick a spot that isn't right where the pointer is.
-    let x, y, triesLeft = 10;
-    do {
-      x = pad + Math.random() * Math.max(0, maxX - pad);
-      y = pad + Math.random() * Math.max(0, maxY - pad);
-    } while (--triesLeft && Math.hypot(x - rect.left, y - rect.top) < 120);
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
+    noBtn.classList.remove("shake");
+    void noBtn.offsetWidth; // restart the shake animation
+    noBtn.classList.add("shake");
 
     hint.textContent = lines[Math.min(tries, lines.length - 1)];
     tries++;
-    yesSize = Math.min(yesSize + 0.25, 2.6);
+    yesSize = Math.min(yesSize + 0.2, 2.2);
     yesBtn.style.fontSize = yesSize + "rem";
   }
 
-  noBtn.addEventListener("mouseenter", runAway);
-  noBtn.addEventListener("touchstart", runAway, { passive: false });
-  noBtn.addEventListener("click", runAway);
-  noBtn.addEventListener("focus", runAway);
-  window.addEventListener("resize", () => {
-    if (noBtn.classList.contains("running")) runAway();
-  });
+  noBtn.addEventListener("mouseenter", refuse);
+  noBtn.addEventListener("click", refuse);
+  noBtn.addEventListener("touchstart", refuse, { passive: false });
 }
 
 // Plan form: don't allow dates in the past, default to tomorrow.
