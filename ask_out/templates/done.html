@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}It's a date! 💖{% endblock %}
+{% block content %}
+  <div class="emoji big">💌</div>
+  <h1>It's a date!</h1>
+  {% if idea %}
+  <div class="ticket">
+    <div><span class="muted">What</span><strong>{{ idea }}</strong></div>
+    {% if date %}<div><span class="muted">When</span><strong id="prettyDate" data-date="{{ date }}">{{ date }}</strong></div>{% endif %}
+    {% if time %}<div><span class="muted">Time</span><strong>{{ time }}</strong></div>{% endif %}
+  </div>
+  {% endif %}
+  <p class="kicker">Can't wait to see you, {{ name }}! 🥹</p>
+  <p class="from">— {{ me }}</p>
+{% endblock %}
+{% block scripts %}
+<script>confetti(); prettifyDate();</script>
+{% endblock %}
