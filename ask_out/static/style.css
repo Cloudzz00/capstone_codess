@@ -118,6 +118,15 @@ legend { margin-bottom: 8px; }
   background: #fff7fa;
 }
 .ticket div { display: flex; justify-content: space-between; gap: 12px; }
+.ticket .ticket-head {
+  justify-content: center;
+  font-weight: 600;
+  letter-spacing: .15em;
+  color: var(--pink-dark);
+  padding-bottom: 8px;
+  border-bottom: 2px dashed var(--border);
+}
+.ticket strong { text-align: right; }
 
 /* Responses table */
 .table-wrap { overflow-x: auto; }

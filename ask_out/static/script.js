@@ -2,7 +2,7 @@
 (function hearts() {
   const box = document.querySelector(".hearts");
   if (!box) return;
-  const icons = ["💖", "💕", "💗", "💘", "🌸"];
+  const icons = ["💖", "💕", "🍿", "🎬", "💗", "🎞️"];
   function spawn() {
     const h = document.createElement("span");
     h.textContent = icons[Math.floor(Math.random() * icons.length)];
@@ -17,18 +17,19 @@
 })();
 
 // The question page: the "No" button runs away and "Yes" keeps growing.
-function initQuestion() {
+function initQuestion(name) {
   const noBtn = document.getElementById("noBtn");
   const yesBtn = document.getElementById("yesBtn");
   const hint = document.getElementById("hint");
+  name = name || "baby";
   const lines = [
-    "Are you sure?",
+    `Are you sure, ${name}?`,
     "Really sure?? 🥺",
-    "Think again!",
-    "Pretty please?",
-    "I'll buy snacks 🍫",
+    "I'll buy the popcorn 🍿",
+    `Pretty please, ${name}?`,
+    "You can pick the movie!",
     "You're breaking my heart 💔",
-    "Okay, now you HAVE to say yes",
+    `Okay ${name}, now you HAVE to say yes`,
   ];
   let tries = 0;
   let yesSize = 1.1;
@@ -85,12 +86,18 @@ function initPlanForm() {
 
 function prettifyDate() {
   const el = document.getElementById("prettyDate");
-  if (!el || !el.dataset.date) return;
-  const d = new Date(el.dataset.date + "T00:00:00");
-  if (!isNaN(d)) {
-    el.textContent = d.toLocaleDateString(undefined, {
-      weekday: "long", month: "long", day: "numeric",
-    });
+  if (el && el.dataset.date) {
+    const d = new Date(el.dataset.date + "T00:00:00");
+    if (!isNaN(d)) {
+      el.textContent = d.toLocaleDateString(undefined, {
+        weekday: "long", month: "long", day: "numeric",
+      });
+    }
+  }
+  const t = document.getElementById("prettyTime");
+  if (t && /^\d{2}:\d{2}$/.test(t.dataset.time || "")) {
+    const [h, m] = t.dataset.time.split(":").map(Number);
+    t.textContent = `${(h % 12) || 12}:${String(m).padStart(2, "0")} ${h < 12 ? "AM" : "PM"}`;
   }
 }
 

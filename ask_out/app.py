@@ -1,4 +1,4 @@
-"""A small "Will you go out with me?" website, built with Flask.
+"""A small "Will you watch a movie with me?" website, built with Flask.
 
 Edit the settings below (or set the matching environment variables), then
 run locally with:  python app.py   and open http://127.0.0.1:5000
@@ -15,18 +15,25 @@ from flask import Flask, abort, redirect, render_template, request, url_for
 # ---------------------------------------------------------------------------
 # Settings: change these to personalise the page.
 # ---------------------------------------------------------------------------
-THEIR_NAME = os.environ.get("THEIR_NAME", "Crush")      # who you're asking
-YOUR_NAME = os.environ.get("YOUR_NAME", "Me")           # who's asking
+THEIR_NAME = os.environ.get("THEIR_NAME", "baby")       # what you call her
+YOUR_NAME = os.environ.get("YOUR_NAME", "your baby")    # how you sign off
 # Password for the page that lists answers: /responses?key=...
 RESPONSES_KEY = os.environ.get("RESPONSES_KEY", "change-me")
 
-DATE_IDEAS = [
-    ("coffee", "Coffee & a long walk"),
-    ("dinner", "Dinner somewhere cosy"),
-    ("movie", "A movie night"),
-    ("picnic", "A picnic in the park"),
-    ("arcade", "Arcade games & ice cream"),
-    ("surprise", "Surprise me!"),
+# Kinds of movie she can pick from.
+MOVIE_GENRES = [
+    ("romcom", "Rom-com 💕"),
+    ("horror", "Horror (I'll protect you) 👻"),
+    ("action", "Action 💥"),
+    ("comedy", "Comedy 😂"),
+    ("animated", "Animated 🧸"),
+    ("youpick", "You pick, baby!"),
+]
+
+# Where to watch it.
+PLACES = [
+    ("cinema", "At the cinema 🎟️"),
+    ("home", "Cozy at home 🛋️"),
 ]
 # ---------------------------------------------------------------------------
 
@@ -67,26 +74,26 @@ def index():
 @app.route("/yes")
 def yes():
     return render_template(
-        "yes.html", name=their_name(), me=YOUR_NAME, ideas=DATE_IDEAS
+        "yes.html", name=their_name(), me=YOUR_NAME,
+        genres=MOVIE_GENRES, places=PLACES,
     )
 
 
 @app.route("/plan", methods=["POST"])
 def plan():
-    ideas = dict(DATE_IDEAS)
-    idea_key = request.form.get("idea", "")
     entry = {
         "submitted_at": datetime.now().isoformat(timespec="seconds"),
         "name": request.form.get("name", "")[:40],
-        "idea": ideas.get(idea_key, "Surprise me!"),
+        "genre": dict(MOVIE_GENRES).get(request.form.get("genre"), "You pick, baby!"),
+        "place": dict(PLACES).get(request.form.get("place"), PLACES[0][1]),
         "date": request.form.get("date", "")[:20],
         "time": request.form.get("time", "")[:10],
         "note": request.form.get("note", "").strip()[:500],
     }
     save_response(entry)
     return redirect(url_for("done", to=entry["name"] or None,
-                            idea=entry["idea"], date=entry["date"],
-                            time=entry["time"]))
+                            genre=entry["genre"], place=entry["place"],
+                            date=entry["date"], time=entry["time"]))
 
 
 @app.route("/done")
@@ -95,7 +102,8 @@ def done():
         "done.html",
         name=their_name(),
         me=YOUR_NAME,
-        idea=request.args.get("idea", ""),
+        genre=request.args.get("genre", ""),
+        place=request.args.get("place", ""),
         date=request.args.get("date", ""),
         time=request.args.get("time", ""),
     )

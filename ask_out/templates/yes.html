@@ -1,19 +1,31 @@
 {% extends "base.html" %}
-{% block title %}Yay! 💖{% endblock %}
+{% block title %}Yay! 🍿{% endblock %}
 {% block content %}
   <div class="emoji big">🥰</div>
-  <h1>Yay! You said yes!</h1>
-  <p class="kicker">Let's make a plan, {{ name }}.</p>
+  <h1>Yay! Movie date it is!</h1>
+  <p class="kicker">Let's plan it, {{ name }}.</p>
 
   <form class="plan" method="post" action="{{ url_for('plan') }}">
     <input type="hidden" name="name" value="{{ name }}">
 
     <fieldset>
-      <legend>What should we do?</legend>
+      <legend>What kind of movie?</legend>
       <div class="ideas">
-        {% for key, label in ideas %}
+        {% for key, label in genres %}
         <label class="idea">
-          <input type="radio" name="idea" value="{{ key }}" {% if loop.first %}checked{% endif %}>
+          <input type="radio" name="genre" value="{{ key }}" {% if loop.first %}checked{% endif %}>
+          <span>{{ label }}</span>
+        </label>
+        {% endfor %}
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Where should we watch?</legend>
+      <div class="ideas">
+        {% for key, label in places %}
+        <label class="idea">
+          <input type="radio" name="place" value="{{ key }}" {% if loop.first %}checked{% endif %}>
           <span>{{ label }}</span>
         </label>
         {% endfor %}
@@ -25,15 +37,15 @@
         <input type="date" name="date" id="dateInput" required>
       </label>
       <label>What time?
-        <input type="time" name="time" value="18:00" required>
+        <input type="time" name="time" value="19:00" required>
       </label>
     </div>
 
-    <label>Anything else? <span class="muted">(optional)</span>
-      <textarea name="note" rows="3" maxlength="500" placeholder="I'm allergic to cats, I love pasta…"></textarea>
+    <label>Snack requests or a movie title? <span class="muted">(optional)</span>
+      <textarea name="note" rows="3" maxlength="500" placeholder="Caramel popcorn, and I want to watch…"></textarea>
     </label>
 
-    <button class="btn yes wide" type="submit">It's a date! 🗓️</button>
+    <button class="btn yes wide" type="submit">It's a movie date! 🎬</button>
   </form>
 {% endblock %}
 {% block scripts %}
