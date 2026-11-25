@@ -3,7 +3,7 @@
 A small Python/Flask site:
 
 1. **Question page.** "Hey baby… Will you watch a movie with me?" The **No**
-   button runs away whenever she tries to click or tap it, and **Yes** grows
+   button stays on screen but can't be pressed: it just shakes and pleads, and **Yes** grows
    with every try.
 2. **Yes page.** Confetti, then a short form: what kind of movie, cinema or at
    home, the day, the time, and snack requests.

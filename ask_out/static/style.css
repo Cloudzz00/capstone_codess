@@ -48,6 +48,7 @@ h1 { font-size: 1.9rem; margin: 8px 0 16px; font-weight: 600; }
 .buttons {
   display: flex;
   gap: 16px;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   min-height: 80px;
@@ -69,7 +70,15 @@ h1 { font-size: 1.9rem; margin: 8px 0 16px; font-weight: 600; }
 .btn.yes { background: var(--pink); color: #fff; }
 .btn.yes:hover { background: var(--pink-dark); transform: scale(1.05); }
 .btn.no { background: var(--grey); color: var(--text); }
-.btn.no.running { position: fixed; z-index: 10; transition: left .2s ease, top .2s ease; }
+.btn.no { cursor: not-allowed; user-select: none; -webkit-user-select: none; }
+.btn.no.shake { animation: shake .4s ease; }
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px) rotate(-3deg); }
+  40% { transform: translateX(8px) rotate(3deg); }
+  60% { transform: translateX(-6px) rotate(-2deg); }
+  80% { transform: translateX(6px) rotate(2deg); }
+}
 .btn.wide { width: 100%; margin-top: 16px; }
 
 /* Plan form */
