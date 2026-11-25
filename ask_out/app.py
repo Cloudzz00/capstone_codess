@@ -22,7 +22,7 @@ RESPONSES_KEY = os.environ.get("RESPONSES_KEY", "change-me")
 
 # Kinds of movie she can pick from.
 MOVIE_GENRES = [
-    ("romcom", "Rom-com 💕"),
+    ("romcom", "Rom-com 💜"),
     ("horror", "Horror (I'll protect you) 👻"),
     ("action", "Action 💥"),
     ("comedy", "Comedy 😂"),

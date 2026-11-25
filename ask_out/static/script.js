@@ -2,7 +2,7 @@
 (function hearts() {
   const box = document.querySelector(".hearts");
   if (!box) return;
-  const icons = ["💖", "💕", "🍿", "🎬", "💗", "🎞️"];
+  const icons = ["💜", "💜", "🍿", "🎬", "🔮", "🎞️"];
   function spawn() {
     const h = document.createElement("span");
     h.textContent = icons[Math.floor(Math.random() * icons.length)];
@@ -86,7 +86,7 @@ function prettifyDate() {
 
 function confetti() {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const colors = ["#ff4d8d", "#ffb3cb", "#ffd166", "#b28dff", "#7bdff2"];
+  const colors = ["#7c3aed", "#a78bfa", "#c4b5fd", "#e9d5ff", "#ffd166"];
   for (let i = 0; i < 80; i++) {
     const c = document.createElement("div");
     c.className = "confetti";
