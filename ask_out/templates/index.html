@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="emoji big">🥺</div>
+  <p class="kicker">Hey {{ name }}…</p>
+  <h1>Will you go out with me?</h1>
+
+  <div class="buttons" id="buttons">
+    <a class="btn yes" id="yesBtn" href="{{ url_for('yes', to=name) }}">Yes 💖</a>
+    <button class="btn no" id="noBtn" type="button">No</button>
+  </div>
+  <p class="hint" id="hint">&nbsp;</p>
+  <p class="from">— {{ me }}</p>
+{% endblock %}
+{% block scripts %}
+<script>initQuestion();</script>
+{% endblock %}

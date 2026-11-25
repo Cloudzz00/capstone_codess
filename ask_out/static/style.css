@@ -1,0 +1,159 @@
+:root {
+  --bg1: #ffe1ec;
+  --bg2: #ffd6e0;
+  --card: #ffffff;
+  --text: #4a2040;
+  --muted: #9a6b8a;
+  --pink: #ff4d8d;
+  --pink-dark: #e03374;
+  --grey: #e9e2e7;
+  --border: #f3c6d7;
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: "Fredoka", system-ui, -apple-system, sans-serif;
+  color: var(--text);
+  background: linear-gradient(160deg, var(--bg1), var(--bg2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  overflow-x: hidden;
+}
+
+.card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 480px;
+  background: var(--card);
+  border-radius: 24px;
+  padding: 32px 24px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(224, 51, 116, 0.18);
+}
+
+.emoji.big { font-size: 64px; line-height: 1; margin-bottom: 8px; }
+h1 { font-size: 1.9rem; margin: 8px 0 16px; font-weight: 600; }
+.kicker { font-size: 1.15rem; color: var(--muted); margin: 0 0 8px; }
+.from { color: var(--muted); margin-top: 24px; font-style: italic; }
+.muted { color: var(--muted); font-weight: 400; }
+.hint { min-height: 1.4em; color: var(--pink-dark); margin: 12px 0 0; }
+
+.buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+  min-height: 80px;
+  margin-top: 16px;
+}
+
+.btn {
+  font: inherit;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 28px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform .15s ease, background .15s ease, font-size .2s ease, padding .2s ease;
+  touch-action: manipulation;
+}
+.btn.yes { background: var(--pink); color: #fff; }
+.btn.yes:hover { background: var(--pink-dark); transform: scale(1.05); }
+.btn.no { background: var(--grey); color: var(--text); }
+.btn.no.running { position: fixed; z-index: 10; transition: left .2s ease, top .2s ease; }
+.btn.wide { width: 100%; margin-top: 16px; }
+
+/* Plan form */
+.plan { text-align: left; display: grid; gap: 16px; margin-top: 16px; }
+fieldset { border: none; padding: 0; margin: 0; }
+legend, .plan label { font-weight: 600; }
+legend { margin-bottom: 8px; }
+.ideas { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.idea { cursor: pointer; }
+.idea input { position: absolute; opacity: 0; pointer-events: none; }
+.idea span {
+  display: block;
+  height: 100%;
+  padding: 10px 12px;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  font-weight: 400;
+  transition: background .15s, border-color .15s;
+}
+.idea input:checked + span { border-color: var(--pink); background: #fff0f5; font-weight: 600; }
+.idea input:focus-visible + span { outline: 3px solid var(--pink); outline-offset: 2px; }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.plan input[type="date"], .plan input[type="time"], .plan textarea {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  font: inherit;
+  font-weight: 400;
+  color: var(--text);
+  padding: 10px 12px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+}
+.plan textarea { resize: vertical; }
+
+/* Ticket on the final page */
+.ticket {
+  display: grid;
+  gap: 10px;
+  text-align: left;
+  border: 2px dashed var(--pink);
+  border-radius: 16px;
+  padding: 16px 20px;
+  margin: 8px 0 20px;
+  background: #fff7fa;
+}
+.ticket div { display: flex; justify-content: space-between; gap: 12px; }
+
+/* Responses table */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; text-align: left; font-size: .95rem; }
+th, td { padding: 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+
+/* Floating hearts background */
+.hearts { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+.hearts span {
+  position: absolute;
+  bottom: -40px;
+  animation: floatUp linear forwards;
+  opacity: .7;
+}
+@keyframes floatUp {
+  to { transform: translateY(-110vh) rotate(25deg); opacity: 0; }
+}
+
+.confetti {
+  position: fixed;
+  top: -20px;
+  width: 10px;
+  height: 14px;
+  z-index: 20;
+  pointer-events: none;
+  animation: fall linear forwards;
+}
+@keyframes fall {
+  to { transform: translateY(110vh) rotate(720deg); }
+}
+
+@media (max-width: 420px) {
+  h1 { font-size: 1.6rem; }
+  .ideas, .row { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hearts, .confetti { display: none; }
+}
