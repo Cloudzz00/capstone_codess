@@ -7,6 +7,7 @@ run locally with:  python app.py   and open http://127.0.0.1:5000
 import json
 import os
 import threading
+import urllib.request
 from datetime import datetime
 from pathlib import Path
 
@@ -19,6 +20,8 @@ THEIR_NAME = os.environ.get("THEIR_NAME", "baby")       # what you call her
 YOUR_NAME = os.environ.get("YOUR_NAME", "your baby")    # how you sign off
 # Password for the page that lists answers: /responses?key=...
 RESPONSES_KEY = os.environ.get("RESPONSES_KEY", "change-me")
+# Optional: a Discord webhook URL. Each answer is posted to that channel.
+DISCORD_WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK_URL", "").strip()
 
 # Kinds of movie she can pick from.
 MOVIE_GENRES = [
@@ -61,10 +64,52 @@ def load_responses():
 
 
 def save_response(entry):
-    with _lock:
-        data = load_responses()
-        data.append(entry)
-        RESPONSES_FILE.write_text(json.dumps(data, indent=2), encoding="utf-8")
+    try:
+        with _lock:
+            data = load_responses()
+            data.append(entry)
+            RESPONSES_FILE.write_text(json.dumps(data, indent=2), encoding="utf-8")
+    except OSError as exc:
+        print(f"Could not save to {RESPONSES_FILE}: {exc}", flush=True)
+
+
+def format_answer(entry):
+    lines = [
+        "💜 **She said YES to the movie date!** 🎬",
+        f"🎞️ Movie: {entry['genre']}",
+        f"📞 How: {entry['place']}",
+        f"📅 When: {entry['date']} at {entry['time']}",
+    ]
+    if entry["note"]:
+        lines.append(f"📝 Note: {entry['note']}")
+    lines.append(f"🕒 Answered: {entry['submitted_at']}")
+    return "\n".join(lines)
+
+
+def _post_to_discord(text):
+    body = json.dumps({
+        "content": text[:1900],
+        "allowed_mentions": {"parse": []},  # never ping @everyone
+    }).encode("utf-8")
+    req = urllib.request.Request(
+        DISCORD_WEBHOOK_URL, data=body, method="POST",
+        headers={"Content-Type": "application/json",
+                 "User-Agent": "MovieDateInvite/1.0"},
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            print(f"Sent answer to Discord (HTTP {resp.status})", flush=True)
+    except Exception as exc:  # don't let a Discord problem break her page
+        print(f"Could not send answer to Discord: {exc}", flush=True)
+
+
+def notify(entry):
+    """Make sure you see her answer even if the saved file gets wiped."""
+    text = format_answer(entry)
+    # Always shows up in the host's logs (Render: the Logs tab).
+    print("NEW ANSWER >>> " + json.dumps(entry, ensure_ascii=False), flush=True)
+    if DISCORD_WEBHOOK_URL:
+        threading.Thread(target=_post_to_discord, args=(text,), daemon=True).start()
 
 
 @app.route("/")
@@ -92,6 +137,7 @@ def plan():
         "note": request.form.get("note", "").strip()[:500],
     }
     save_response(entry)
+    notify(entry)
     return redirect(url_for("done", to=entry["name"] or None,
                             genre=entry["genre"], place=entry["place"],
                             date=entry["date"], time=entry["time"]))

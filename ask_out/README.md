@@ -42,6 +42,91 @@ Then open http://127.0.0.1:5000
 
 ---
 
+# Step-by-step: deploy on Render (free alternative)
+
+Use this if PythonAnywhere doesn't work for you. Your site will be at
+`https://SOME-NAME.onrender.com`.
+
+**Two things to know about Render's free plan:**
+- The site **goes to sleep after 15 minutes** with no visitors. The next
+  visit takes up to about a minute to load. **Open the link yourself a minute
+  before you send it to her**, so it's awake.
+- **Saved answers can disappear** when it sleeps or restarts (the
+  `/responses` page starts empty again). Her answer still shows on her
+  ticket page, so ask her to send you a screenshot 📸, or check
+  `/responses` soon after she answers.
+
+### Step 1 – Sign up
+Go to <https://render.com>, click **Get Started**, and sign up with
+**GitHub** (easiest, since your code is there).
+
+### Step 2 – Create a web service
+1. In the Render dashboard, click **+ New** → **Web Service**.
+2. Choose **Git Provider → GitHub**, allow Render to see your repos, and
+   pick **capstone_codess**.
+   (Or paste the public URL `https://github.com/Cloudzz00/capstone_codess`
+   under **Public Git Repository**.)
+
+### Step 3 – Fill in the settings
+
+| Setting            | Value                              |
+|--------------------|------------------------------------|
+| **Name**           | anything, e.g. `movie-date` (becomes the web address) |
+| **Branch**         | `main`                             |
+| **Root Directory** | `ask_out`                          |
+| **Runtime / Language** | `Python 3`                     |
+| **Build Command**  | `pip install -r requirements.txt`  |
+| **Start Command**  | `gunicorn app:app`                 |
+| **Instance Type**  | **Free**                           |
+
+### Step 4 – Add your settings (environment variables)
+Scroll to **Environment Variables** and add:
+
+| Key             | Value                |
+|-----------------|----------------------|
+| `THEIR_NAME`    | `baby`               |
+| `YOUR_NAME`     | `your baby`          |
+| `RESPONSES_KEY` | `pick-a-secret-word` |
+
+### Step 4b – Get her answer on your phone (recommended)
+Free Render can wipe the `/responses` page, so have each answer sent to
+**Discord** instead:
+
+1. In Discord, make a server just for you (or use one you own) and pick a
+   channel.
+2. Click the ⚙️ next to the channel → **Integrations** → **Webhooks** →
+   **New Webhook** → **Copy Webhook URL**.
+3. In Render, add one more environment variable:
+
+   | Key                   | Value                         |
+   |-----------------------|-------------------------------|
+   | `DISCORD_WEBHOOK_URL` | the URL you copied            |
+   | `TZ` *(optional)*     | your timezone, e.g. `Asia/Manila`, so the "Answered" time is local |
+
+When she presses **It's a movie date!**, you get a Discord message with the
+movie, how you'll watch, the date, time and her note.
+
+**Backup without Discord:** every answer is also written to Render's
+**Logs** tab. Search the logs for `NEW ANSWER`.
+
+Keep the webhook URL private: anyone with it can post in that channel.
+
+### Step 5 – Deploy
+Click **Deploy Web Service**. Wait for the log to say **Your service is
+live 🎉** (a few minutes the first time).
+
+### Step 6 – Test and send
+Click the `https://….onrender.com` link at the top of the page, try it
+yourself, then send her the link 💜
+
+**Updating later:** any change merged into `main` on GitHub redeploys
+automatically. To redeploy by hand: **Manual Deploy → Deploy latest commit**.
+
+**If it fails:** open the **Logs** tab. Most often the Root Directory isn't
+`ask_out`, or the Start Command is mistyped.
+
+---
+
 # Step-by-step: deploy on PythonAnywhere (free)
 
 Your site will end up at `https://YOUR_USERNAME.pythonanywhere.com`.
