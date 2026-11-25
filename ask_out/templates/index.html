@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
-  <div class="emoji big">🥺</div>
+  <div class="emoji big">🥺🍿</div>
   <p class="kicker">Hey {{ name }}…</p>
-  <h1>Will you go out with me?</h1>
+  <h1>Will you watch a movie with me?</h1>
 
   <div class="buttons" id="buttons">
     <a class="btn yes" id="yesBtn" href="{{ url_for('yes', to=name) }}">Yes 💖</a>
@@ -12,5 +12,5 @@
   <p class="from">— {{ me }}</p>
 {% endblock %}
 {% block scripts %}
-<script>initQuestion();</script>
+<script>initQuestion({{ name|tojson }});</script>
 {% endblock %}

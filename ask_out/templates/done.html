@@ -1,16 +1,18 @@
 {% extends "base.html" %}
-{% block title %}It's a date! 💖{% endblock %}
+{% block title %}It's a movie date! 🍿{% endblock %}
 {% block content %}
-  <div class="emoji big">💌</div>
-  <h1>It's a date!</h1>
-  {% if idea %}
+  <div class="emoji big">🎬</div>
+  <h1>It's a movie date!</h1>
+  {% if genre or place %}
   <div class="ticket">
-    <div><span class="muted">What</span><strong>{{ idea }}</strong></div>
+    <div class="ticket-head">🎟️ ADMIT TWO</div>
+    {% if genre %}<div><span class="muted">Movie</span><strong>{{ genre }}</strong></div>{% endif %}
+    {% if place %}<div><span class="muted">Where</span><strong>{{ place }}</strong></div>{% endif %}
     {% if date %}<div><span class="muted">When</span><strong id="prettyDate" data-date="{{ date }}">{{ date }}</strong></div>{% endif %}
-    {% if time %}<div><span class="muted">Time</span><strong>{{ time }}</strong></div>{% endif %}
+    {% if time %}<div><span class="muted">Time</span><strong id="prettyTime" data-time="{{ time }}">{{ time }}</strong></div>{% endif %}
   </div>
   {% endif %}
-  <p class="kicker">Can't wait to see you, {{ name }}! 🥹</p>
+  <p class="kicker">I'll bring the popcorn, {{ name }}! Can't wait 🥹🍿</p>
   <p class="from">— {{ me }}</p>
 {% endblock %}
 {% block scripts %}
