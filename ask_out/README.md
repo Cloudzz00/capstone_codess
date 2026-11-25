@@ -88,6 +88,29 @@ Scroll to **Environment Variables** and add:
 | `YOUR_NAME`     | `your baby`          |
 | `RESPONSES_KEY` | `pick-a-secret-word` |
 
+### Step 4b – Get her answer on your phone (recommended)
+Free Render can wipe the `/responses` page, so have each answer sent to
+**Discord** instead:
+
+1. In Discord, make a server just for you (or use one you own) and pick a
+   channel.
+2. Click the ⚙️ next to the channel → **Integrations** → **Webhooks** →
+   **New Webhook** → **Copy Webhook URL**.
+3. In Render, add one more environment variable:
+
+   | Key                   | Value                         |
+   |-----------------------|-------------------------------|
+   | `DISCORD_WEBHOOK_URL` | the URL you copied            |
+   | `TZ` *(optional)*     | your timezone, e.g. `Asia/Manila`, so the "Answered" time is local |
+
+When she presses **It's a movie date!**, you get a Discord message with the
+movie, how you'll watch, the date, time and her note.
+
+**Backup without Discord:** every answer is also written to Render's
+**Logs** tab. Search the logs for `NEW ANSWER`.
+
+Keep the webhook URL private: anyone with it can post in that channel.
+
 ### Step 5 – Deploy
 Click **Deploy Web Service**. Wait for the log to say **Your service is
 live 🎉** (a few minutes the first time).
