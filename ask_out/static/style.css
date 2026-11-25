@@ -1,13 +1,13 @@
 :root {
-  --bg1: #ffe1ec;
-  --bg2: #ffd6e0;
+  --bg1: #efe4ff;
+  --bg2: #dcc8ff;
   --card: #ffffff;
-  --text: #4a2040;
-  --muted: #9a6b8a;
-  --pink: #ff4d8d;
-  --pink-dark: #e03374;
-  --grey: #e9e2e7;
-  --border: #f3c6d7;
+  --text: #2e1a4a;
+  --muted: #7a68a0;
+  --accent: #7c3aed;
+  --accent-dark: #6326c9;
+  --grey: #e7e2ef;
+  --border: #d9c9f5;
 }
 
 * { box-sizing: border-box; }
@@ -35,7 +35,7 @@ body {
   border-radius: 24px;
   padding: 32px 24px;
   text-align: center;
-  box-shadow: 0 20px 50px rgba(224, 51, 116, 0.18);
+  box-shadow: 0 20px 50px rgba(99, 38, 201, 0.2);
 }
 
 .emoji.big { font-size: 64px; line-height: 1; margin-bottom: 8px; }
@@ -43,7 +43,7 @@ h1 { font-size: 1.9rem; margin: 8px 0 16px; font-weight: 600; }
 .kicker { font-size: 1.15rem; color: var(--muted); margin: 0 0 8px; }
 .from { color: var(--muted); margin-top: 24px; font-style: italic; }
 .muted { color: var(--muted); font-weight: 400; }
-.hint { min-height: 1.4em; color: var(--pink-dark); margin: 12px 0 0; }
+.hint { min-height: 1.4em; color: var(--accent-dark); margin: 12px 0 0; }
 
 .buttons {
   display: flex;
@@ -67,8 +67,8 @@ h1 { font-size: 1.9rem; margin: 8px 0 16px; font-weight: 600; }
   transition: transform .15s ease, background .15s ease, font-size .2s ease, padding .2s ease;
   touch-action: manipulation;
 }
-.btn.yes { background: var(--pink); color: #fff; }
-.btn.yes:hover { background: var(--pink-dark); transform: scale(1.05); }
+.btn.yes { background: var(--accent); color: #fff; }
+.btn.yes:hover { background: var(--accent-dark); transform: scale(1.05); }
 .btn.no { background: var(--grey); color: var(--text); }
 .btn.no { cursor: not-allowed; user-select: none; -webkit-user-select: none; }
 .btn.no.shake { animation: shake .4s ease; }
@@ -98,8 +98,8 @@ legend { margin-bottom: 8px; }
   font-weight: 400;
   transition: background .15s, border-color .15s;
 }
-.idea input:checked + span { border-color: var(--pink); background: #fff0f5; font-weight: 600; }
-.idea input:focus-visible + span { outline: 3px solid var(--pink); outline-offset: 2px; }
+.idea input:checked + span { border-color: var(--accent); background: #f4edff; font-weight: 600; }
+.idea input:focus-visible + span { outline: 3px solid var(--accent); outline-offset: 2px; }
 .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .plan input[type="date"], .plan input[type="time"], .plan textarea {
   display: block;
@@ -120,18 +120,18 @@ legend { margin-bottom: 8px; }
   display: grid;
   gap: 10px;
   text-align: left;
-  border: 2px dashed var(--pink);
+  border: 2px dashed var(--accent);
   border-radius: 16px;
   padding: 16px 20px;
   margin: 8px 0 20px;
-  background: #fff7fa;
+  background: #f8f4ff;
 }
 .ticket div { display: flex; justify-content: space-between; gap: 12px; }
 .ticket .ticket-head {
   justify-content: center;
   font-weight: 600;
   letter-spacing: .15em;
-  color: var(--pink-dark);
+  color: var(--accent-dark);
   padding-bottom: 8px;
   border-bottom: 2px dashed var(--border);
 }
